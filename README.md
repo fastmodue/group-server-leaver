@@ -1,8 +1,8 @@
-# Discord Server/Group Leaver 🚀
+# Discord Server/Group Leaver 
 
 A Python script that helps you quickly leave multiple Discord servers and group DMs at once, with the option to keep specific ones.
 
-## Features ✨
+## Features 
 
 - **Bulk Leave Servers** - Leave all Discord servers you're in with one command
 - **Bulk Leave Groups** - Exit all group DMs automatically
@@ -18,7 +18,7 @@ A Python script that helps you quickly leave multiple Discord servers and group 
 - `colorama` library
 - `requests` library
 
-## Installation 🔧
+## Installation 
 
 1. Clone this repository:
 ```bash
@@ -52,7 +52,7 @@ python main.py
 
 5. Confirm and let the script do its work!
 
-## Getting Your Discord Token 🔑
+## Getting Your Discord Token 
 
 > ⚠️ **Warning**: Never share your Discord token with anyone! It gives full access to your account.
 
@@ -137,7 +137,7 @@ This script is for educational purposes only. Use at your own risk. I am not res
 - Excessive API usage may result in rate limiting or temporary restrictions
 - Always keep backups of important server invite links before leaving
 
-## Troubleshooting 🔧
+## Troubleshooting 💢
 
 **"Invalid token" error:**
 - Make sure you copied the entire token correctly
@@ -156,11 +156,11 @@ This script is for educational purposes only. Use at your own risk. I am not res
 
 This project is open source and available under the MIT License.
 
-## Contributing 🤝
+## Contant me 💌
+Add my discord: fastmodue 
+Or join my server: https://discord.gg/Ju4xe6gYJ4
 
-Contributions, issues, and feature requests are welcome! Feel free to check the issues page.
-
-## Author 👨‍💻
+## Author 
 
 Made by fastmodue
 
