@@ -157,8 +157,8 @@ This script is for educational purposes only. Use at your own risk. I am not res
 This project is open source and available under the [GNU GPL v3.0](LICENSE) License.
 
 ## Contact me 💌
-Add my discord: fastmodue 
-Or join my server: https://discord.gg/Ju4xe6gYJ4
+- Add my discord: fastmodue 
+- Or join my server: https://discord.gg/Ju4xe6gYJ4
 
 ## Author 
 
