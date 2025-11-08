@@ -6,7 +6,7 @@ import sys
 import random
 from colorama import Fore, Style, init
 
-# Initialize colorama for Windows compatibility
+# colorama needs to work somehow
 init(autoreset=True)
 
 def print_banner():
@@ -341,3 +341,4 @@ if __name__ == "__main__":
     except Exception as e:
         print(f"\n{Fore.RED}[ERROR] {str(e)}")
         sys.exit(1)
+
