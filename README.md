@@ -15,6 +15,7 @@ A Python script that helps you quickly leave multiple Discord servers and group 
 ## Prerequisites 📋
 
 - Python 3.6 or higher
+- `colorama` library
 - `requests` library
 
 ## Installation 🔧
@@ -27,6 +28,7 @@ cd group-server-leaver
 
 2. Install required dependencies:
 ```bash
+pip install colorama
 pip install requests
 ```
 
