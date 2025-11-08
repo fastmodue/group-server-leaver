@@ -154,9 +154,9 @@ This script is for educational purposes only. Use at your own risk. I am not res
 
 ## License 📄
 
-This project is open source and available under the MIT License.
+This project is open source and available under the [GNU GPL v3.0](LICENSE) License.
 
-## Contant me 💌
+## Contact me 💌
 Add my discord: fastmodue 
 Or join my server: https://discord.gg/Ju4xe6gYJ4
 
