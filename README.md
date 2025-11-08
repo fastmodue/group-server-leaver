@@ -21,7 +21,7 @@ A Python script that helps you quickly leave multiple Discord servers and group 
 
 1. Clone this repository:
 ```bash
-git clone https://github.com/yourusername/group-server-leaver.git
+git clone https://github.com/fastmodue/group-server-leaver.git
 cd group-server-leaver
 ```
 
