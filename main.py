@@ -4,17 +4,21 @@ import requests
 import time
 import sys
 import random
+from colorama import Fore, Style, init
+
+# Initialize colorama for Windows compatibility
+init(autoreset=True)
 
 def print_banner():
-    banner = """
-\033[91m
+    banner = f"""
+{Fore.RED}
     ╔═══════════════════════════════════════════════════════╗
     ║                                                       ║
     ║            DISCORD SERVER/GROUP LEAVER                ║
     ║                  AGENT SOLUTION                       ║
     ║                                                       ║
     ╔═══════════════════════════════════════════════════════╗
-\033[0m
+{Style.RESET_ALL}
     """
     print(banner)
 
@@ -40,10 +44,10 @@ def get_guilds(token):
     if response.status_code == 200:
         return response.json()
     elif response.status_code == 401:
-        print("\033[91m[ERROR] Invalid token! Please check your token and try again.\033[0m")
+        print(f"{Fore.RED}[ERROR] Invalid token! Please check your token and try again.")
         sys.exit(1)
     else:
-        print(f"\033[91m[ERROR] Failed to fetch servers: {response.status_code}\033[0m")
+        print(f"{Fore.RED}[ERROR] Failed to fetch servers: {response.status_code}")
         return []
 
 def get_dms(token):
@@ -56,7 +60,7 @@ def get_dms(token):
         all_channels = response.json()
         return [ch for ch in all_channels if ch.get('type') == 3]
     else:
-        print(f"\033[91m[ERROR] Failed to fetch DMs: {response.status_code}\033[0m")
+        print(f"{Fore.RED}[ERROR] Failed to fetch DMs: {response.status_code}")
         return []
 
 def leave_guild(token, guild_id):
@@ -110,7 +114,7 @@ def progress_bar(current, total, bar_length=40):
     percent = current / total
     filled = int(bar_length * percent)
     bar = '█' * filled + '░' * (bar_length - filled)
-    print(f'\r\033[92m[Progress] {bar} {current}/{total}\033[0m', end='', flush=True)
+    print(f'\r{Fore.GREEN}[Progress] {bar} {current}/{total}', end='', flush=True)
 
 def get_error_description(status_code):
     """Get human-readable description of HTTP status codes"""
@@ -133,40 +137,40 @@ def smart_delay(base_delay=0.5, variance=0.3):
 
 def handle_rate_limit(retry_after=30):
     """Handle rate limiting with countdown"""
-    print(f"\n\033[93m[RATE LIMITED] Waiting {retry_after} seconds...\033[0m")
+    print(f"\n{Fore.YELLOW}[RATE LIMITED] Waiting {retry_after} seconds...")
     for remaining in range(retry_after, 0, -1):
-        print(f"\r\033[93m[Resuming in {remaining}s...]\033[0m", end='', flush=True)
+        print(f"\r{Fore.YELLOW}[Resuming in {remaining}s...]", end='', flush=True)
         time.sleep(1)
-    print("\r\033[92m[Resuming operations...]\033[0m")
+    print(f"\r{Fore.GREEN}[Resuming operations...]")
 
 def main():
     print_banner()
     
-    print("\033[93mWhat would you like to leave?\033[0m")
+    print(f"{Fore.YELLOW}What would you like to leave?")
     print("[1] Discord Groups (DMs)")
     print("[2] Discord Servers")
     print("[3] Both\n")
     
-    choice = input("\033[96mEnter your choice (1/2/3): \033[0m").strip()
+    choice = input(f"{Fore.CYAN}Enter your choice (1/2/3): ").strip()
     
     if choice not in ['1', '2', '3']:
-        print("\033[91m[ERROR] Invalid choice!\033[0m")
+        print(f"{Fore.RED}[ERROR] Invalid choice!")
         return
     
-    token = input("\n\033[96mEnter your Discord token: \033[0m").strip()
+    token = input(f"\n{Fore.CYAN}Enter your Discord token: ").strip()
     
     if not token:
-        print("\033[91m[ERROR] Token cannot be empty!\033[0m")
+        print(f"{Fore.RED}[ERROR] Token cannot be empty!")
         return
     
-    keep_ids = input("\n\033[96m[OPTIONAL] Any server/group IDs to KEEP?\n(Format: id1,id2,id3 or press Enter to leave ALL): \033[0m").strip()
+    keep_ids = input(f"\n{Fore.CYAN}[OPTIONAL] Any server/group IDs to KEEP?\n(Format: id1,id2,id3 or press Enter to leave ALL): ").strip()
     keep_list = [id.strip() for id in keep_ids.split(',') if id.strip()] if keep_ids else []
     
-    print("\n\033[93m[Scanning...]\033[0m")
+    print(f"\n{Fore.YELLOW}[Scanning...]")
     
     user_id = get_user_id(token)
     if not user_id:
-        print("\033[91m[ERROR] Could not fetch user information!\033[0m")
+        print(f"{Fore.RED}[ERROR] Could not fetch user information!")
         return
     
     
@@ -179,9 +183,9 @@ def main():
         groups = get_dms(token)
    
     if keep_list:
-        print(f"\n\033[96m╔═══════════════════════════════════════╗\033[0m")
-        print(f"\033[96m║        SERVERS/GROUPS TO KEEP:        ║\033[0m")
-        print(f"\033[96m╚═══════════════════════════════════════╝\033[0m")
+        print(f"\n{Fore.CYAN}╔═══════════════════════════════════════╗")
+        print(f"{Fore.CYAN}║        SERVERS/GROUPS TO KEEP:        ║")
+        print(f"{Fore.CYAN}╚═══════════════════════════════════════╝")
         
         found_keeps = []
         not_found = []
@@ -205,25 +209,25 @@ def main():
         
         if found_keeps:
             for item in found_keeps:
-                print(f"\033[92m  {item}\033[0m")
+                print(f"{Fore.GREEN}  {item}")
         
         if not_found:
-            print(f"\n\033[91m  ⚠️  Warning: These IDs were not found:\033[0m")
+            print(f"\n{Fore.RED}  ⚠️  Warning: These IDs were not found:")
             for nf_id in not_found:
-                print(f"\033[91m     {nf_id}\033[0m")
+                print(f"{Fore.RED}     {nf_id}")
         
-        print(f"\n\033[93mTotal keeping: {len(found_keeps)} | Not found: {len(not_found)}\033[0m")
+        print(f"\n{Fore.YELLOW}Total keeping: {len(found_keeps)} | Not found: {len(not_found)}")
         
-        confirm = input("\n\033[96mProceed with these settings? (y/n): \033[0m").strip().lower()
+        confirm = input(f"\n{Fore.CYAN}Proceed with these settings? (y/n): ").strip().lower()
         if confirm != 'y':
-            print("\033[91m[Cancelled by user]\033[0m")
+            print(f"{Fore.RED}[Cancelled by user]")
             return
         print()
     else:
-        print("\n\033[91m⚠️  WARNING: You will leave ALL servers/groups!\033[0m")
-        confirm = input("\033[96mAre you sure? (y/n): \033[0m").strip().lower()
+        print(f"\n{Fore.RED}⚠️  WARNING: You will leave ALL servers/groups!")
+        confirm = input(f"{Fore.CYAN}Are you sure? (y/n): ").strip().lower()
         if confirm != 'y':
-            print("\033[91m[Cancelled by user]\033[0m")
+            print(f"{Fore.RED}[Cancelled by user]")
             return
         print()
     
@@ -234,11 +238,11 @@ def main():
     
     # servers
     if choice in ['2', '3']:
-        print(f"\033[92m[Found {len(guilds)} servers]\033[0m")
+        print(f"{Fore.GREEN}[Found {len(guilds)} servers]")
         
         if guilds:
-            print("\n\033[93m[Leaving servers...]\033[0m")
-            print("\033[93m[Using 0.5-0.8s delay between requests]\033[0m\n")
+            print(f"\n{Fore.YELLOW}[Leaving servers...]")
+            print(f"{Fore.YELLOW}[Using 0.5-0.8s delay between requests]\n")
             
             for i, guild in enumerate(guilds):
                 guild_id = guild['id']
@@ -247,10 +251,10 @@ def main():
                 
                 # check for owner
                 if owner_id == user_id:
-                    print(f"\033[91m[SKIPPED] Can't leave owned server: {guild_name}\033[0m")
+                    print(f"{Fore.RED}[SKIPPED] Can't leave owned server: {guild_name}")
                     owned_count += 1
                 elif guild_id in keep_list:
-                    print(f"\033[96m[KEPT] {guild_name} (ID: {guild_id})\033[0m")
+                    print(f"{Fore.CYAN}[KEPT] {guild_name} (ID: {guild_id})")
                     kept_count += 1
                 else:
                     max_retries = 3
@@ -261,26 +265,26 @@ def main():
                         
                         if success:
                             left_count += 1
-                            print(f"\033[92m[LEFT] {guild_name}\033[0m")
+                            print(f"{Fore.GREEN}[LEFT] {guild_name}")
                             smart_delay(0.5, 0.3)  
                             break
                         elif is_owner:
-                            print(f"\033[91m[SKIPPED] Can't leave owned server: {guild_name}\033[0m")
+                            print(f"{Fore.RED}[SKIPPED] Can't leave owned server: {guild_name}")
                             owned_count += 1
                             break
                         elif status_code == 429:
                             # rate limit
                             retry_count += 1
                             if retry_count < max_retries:
-                                print(f"\033[93m[RATE LIMITED] {guild_name} - Retry {retry_count}/{max_retries}\033[0m")
+                                print(f"{Fore.YELLOW}[RATE LIMITED] {guild_name} - Retry {retry_count}/{max_retries}")
                                 handle_rate_limit(30)
                             else:
-                                print(f"\033[91m[FAILED] {guild_name} - Too many rate limits\033[0m")
+                                print(f"{Fore.RED}[FAILED] {guild_name} - Too many rate limits")
                                 failed_count += 1
                         else:
                             # some other error
                             error_desc = get_error_description(status_code)
-                            print(f"\033[91m[FAILED] {guild_name} - {error_desc}: {error_msg}\033[0m")
+                            print(f"{Fore.RED}[FAILED] {guild_name} - {error_desc}: {error_msg}")
                             failed_count += 1
                             break
                 
@@ -291,49 +295,49 @@ def main():
     # groups
     if choice in ['1', '3']:
         groups = get_dms(token)
-        print(f"\n\033[92m[Found {len(groups)} groups]\033[0m")
+        print(f"\n{Fore.GREEN}[Found {len(groups)} groups]")
         
         if groups:
-            print("\n\033[93m[Leaving groups...]\033[0m\n")
+            print(f"\n{Fore.YELLOW}[Leaving groups...]\n")
             
             for i, group in enumerate(groups):
                 channel_id = group['id']
                 group_name = group.get('name', 'Unnamed Group')
                 
                 if channel_id in keep_list:
-                    print(f"\033[96m[KEPT] {group_name} (ID: {channel_id})\033[0m")
+                    print(f"{Fore.CYAN}[KEPT] {group_name} (ID: {channel_id})")
                     kept_count += 1
                 else:
                     success, status_code, error_msg = leave_group(token, channel_id)
                     
                     if success:
                         left_count += 1
-                        print(f"\033[92m[LEFT] {group_name}\033[0m")
+                        print(f"{Fore.GREEN}[LEFT] {group_name}")
                         smart_delay(0.3, 0.2)  
                     else:
                         error_desc = get_error_description(status_code)
-                        print(f"\033[91m[FAILED] {group_name} - {error_desc}: {error_msg}\033[0m")
+                        print(f"{Fore.RED}[FAILED] {group_name} - {error_desc}: {error_msg}")
                         failed_count += 1
                 
                 progress_bar(i + 1, len(groups))
             
             print("\n")
     
-    print(f"\n\033[92m╔═══════════════════════════════════════╗\033[0m")
-    print(f"\033[92m║          OPERATION COMPLETE!          ║\033[0m")
-    print(f"\033[92m╠═══════════════════════════════════════╣\033[0m")
-    print(f"\033[92m║  Left:   {left_count:<2}                           ║\033[0m")
-    print(f"\033[92m║  Kept:   {kept_count:<2}                           ║\033[0m")
-    print(f"\033[92m║  Owned:  {owned_count:<2} (skipped)                ║\033[0m")
-    print(f"\033[92m║  Failed: {failed_count:<2}                           ║\033[0m")
-    print(f"\033[92m╚═══════════════════════════════════════╝\033[0m")
+    print(f"\n{Fore.GREEN}╔═══════════════════════════════════════╗")
+    print(f"{Fore.GREEN}║          OPERATION COMPLETE!          ║")
+    print(f"{Fore.GREEN}╠═══════════════════════════════════════╣")
+    print(f"{Fore.GREEN}║  Left:   {left_count:<2}                           ║")
+    print(f"{Fore.GREEN}║  Kept:   {kept_count:<2}                           ║")
+    print(f"{Fore.GREEN}║  Owned:  {owned_count:<2} (skipped)                ║")
+    print(f"{Fore.GREEN}║  Failed: {failed_count:<2}                           ║")
+    print(f"{Fore.GREEN}╚═══════════════════════════════════════╝")
 
 if __name__ == "__main__":
     try:
         main()
     except KeyboardInterrupt:
-        print("\n\n\033[91m[Cancelled by user]\033[0m")
+        print(f"\n\n{Fore.RED}[Cancelled by user]")
         sys.exit(0)
     except Exception as e:
-        print(f"\n\033[91m[ERROR] {str(e)}\033[0m")
+        print(f"\n{Fore.RED}[ERROR] {str(e)}")
         sys.exit(1)
